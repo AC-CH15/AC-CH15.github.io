@@ -1,0 +1,662 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:Consolas,monospace;
+    color:#FFD500;
+}
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+body{
+
+    background:
+    radial-gradient(circle at center,#161100 0%,#060606 45%,#000 100%);
+
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+#background-grid{
+
+    position:fixed;
+    inset:0;
+
+    background-image:
+
+        linear-gradient(rgba(255,213,0,.03) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,213,0,.03) 1px,transparent 1px);
+
+    background-size:60px 60px;
+
+    animation:gridMove 30s linear infinite;
+
+    opacity:.25;
+
+}
+
+/* =========================================================
+   SCANLINES
+========================================================= */
+
+#scanlines{
+
+    position:fixed;
+    inset:0;
+
+    pointer-events:none;
+
+    background:
+
+    repeating-linear-gradient(
+
+        transparent 0px,
+        rgba(255,255,255,.03) 2px,
+        transparent 4px
+
+    );
+
+    mix-blend-mode:screen;
+
+}
+
+/* =========================================================
+   FILM GRAIN
+========================================================= */
+
+#noise{
+
+    position:fixed;
+    inset:-50%;
+
+    pointer-events:none;
+
+    opacity:.06;
+
+    background-image:
+
+    radial-gradient(circle,#ffffff 1px,transparent 1px);
+
+    background-size:4px 4px;
+
+    animation:noiseMove .25s steps(2) infinite;
+
+}
+
+/* =========================================================
+   VIGNETTE
+========================================================= */
+
+#vignette{
+
+    position:fixed;
+    inset:0;
+
+    pointer-events:none;
+
+    background:
+
+    radial-gradient(circle,
+        transparent 35%,
+        rgba(0,0,0,.2) 60%,
+        rgba(0,0,0,.92) 100%);
+
+}
+
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+#particles{
+
+    position:fixed;
+    inset:0;
+
+    overflow:hidden;
+
+}
+
+/* =========================================================
+   SOLVER CONTAINER
+========================================================= */
+
+#solver-container{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:650px;
+    height:650px;
+
+}
+
+/* =========================================================
+   HALOS
+========================================================= */
+
+.halo{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    border-radius:50%;
+
+    transform:translate(-50%,-50%);
+
+}
+
+.halo-1{
+
+    width:280px;
+    height:280px;
+
+    background:
+
+    radial-gradient(circle,
+
+    rgba(255,215,0,.65),
+
+    rgba(255,215,0,.08),
+
+    transparent);
+
+    filter:blur(40px);
+
+    animation:pulse 4s ease-in-out infinite;
+
+}
+
+.halo-2{
+
+    width:420px;
+    height:420px;
+
+    background:
+
+    radial-gradient(circle,
+
+    rgba(255,215,0,.2),
+
+    transparent);
+
+    filter:blur(80px);
+
+    animation:pulseSlow 8s ease-in-out infinite;
+
+}
+
+/* =========================================================
+   RINGS
+========================================================= */
+
+.ring{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    border:2px solid rgba(255,215,0,.18);
+
+    transform:translate(-50%,-50%);
+
+}
+
+.ring1{
+
+    width:300px;
+    height:300px;
+
+    border-radius:50%;
+
+    animation:spin 22s linear infinite;
+
+}
+
+.ring2{
+
+    width:380px;
+    height:180px;
+
+    border-radius:50%;
+
+    animation:spinReverse 16s linear infinite;
+
+}
+
+.ring3{
+
+    width:250px;
+    height:420px;
+
+    border-radius:50%;
+
+    animation:spin 11s linear infinite;
+
+}
+
+/* =========================================================
+   GLYPHS
+========================================================= */
+
+#orbit-layer{
+
+    position:absolute;
+    inset:0;
+
+}
+
+.glyph{
+
+    position:absolute;
+
+    color:#ffe56f;
+
+    font-size:18px;
+
+    text-shadow:
+
+    0 0 10px gold,
+    0 0 25px gold;
+
+    opacity:.75;
+
+}
+
+/* =========================================================
+   TENDRILS
+========================================================= */
+
+#tendrils{
+
+    position:absolute;
+
+    inset:0;
+
+}
+
+#tendrils span{
+
+    position:absolute;
+
+    width:220px;
+    height:5px;
+
+    background:
+
+    linear-gradient(
+
+    90deg,
+
+    transparent,
+
+    rgba(0,0,0,.95),
+
+    transparent);
+
+    filter:blur(2px);
+
+    opacity:.5;
+
+}
+
+/* =========================================================
+   CORE
+========================================================= */
+
+#core{
+
+    position:absolute;
+
+    width:190px;
+    height:190px;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    box-shadow:
+
+    0 0 40px #ffd500,
+    0 0 120px #ffd500,
+    0 0 240px rgba(255,213,0,.45);
+
+}
+
+/* =========================================================
+   INNER CORE
+========================================================= */
+
+#core-inner{
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:50%;
+
+    background:
+
+    radial-gradient(circle at 35% 30%,
+
+    #fffbe5 0%,
+
+    #fff08a 10%,
+
+    #ffd500 28%,
+
+    #d7a300 55%,
+
+    #433000 82%,
+
+    #000 100%);
+
+    animation:breathe 5s ease-in-out infinite;
+
+}
+
+/* =========================================================
+   GLOW
+========================================================= */
+
+#core-glow{
+
+    position:absolute;
+    inset:-20%;
+
+    border-radius:50%;
+
+    background:
+
+    radial-gradient(circle,
+
+    rgba(255,245,170,.45),
+
+    transparent);
+
+    filter:blur(35px);
+
+}
+
+/* =========================================================
+   CRACKS
+========================================================= */
+
+#core-cracks{
+
+    position:absolute;
+    inset:0;
+
+    background:
+
+    repeating-linear-gradient(
+
+    120deg,
+
+    transparent 0,
+
+    transparent 28px,
+
+    rgba(0,0,0,.15) 30px,
+
+    transparent 32px);
+
+    opacity:.12;
+
+}
+
+/* =========================================================
+   GLITCH SLICES
+========================================================= */
+
+.glitch-slice{
+
+    position:absolute;
+
+    width:100%;
+    height:10px;
+
+    background:
+
+    rgba(255,255,255,.18);
+
+    opacity:0;
+
+}
+
+.slice1{top:35px;}
+.slice2{top:90px;}
+.slice3{top:145px;}
+
+/* =========================================================
+   TERMINAL
+========================================================= */
+
+#terminal{
+
+    position:absolute;
+
+    left:50%;
+    bottom:60px;
+
+    transform:translateX(-50%);
+
+    width:700px;
+
+    text-align:center;
+
+    letter-spacing:2px;
+
+}
+
+.status{
+
+    display:none;
+
+    font-size:17px;
+
+    text-shadow:0 0 8px gold;
+
+}
+
+.status.active{
+
+    display:block;
+
+}
+
+.warning{
+
+    color:#ffae00;
+
+}
+
+.success{
+
+    color:#fff7b5;
+
+}
+
+/* =========================================================
+   SECRET MESSAGE
+========================================================= */
+
+#hidden-message{
+
+    position:absolute;
+
+    top:14%;
+
+    width:100%;
+
+    text-align:center;
+
+    font-size:38px;
+
+    letter-spacing:12px;
+
+    opacity:0;
+
+    color:#fff2b5;
+
+    text-shadow:
+
+    0 0 20px gold;
+
+}
+
+/* =========================================================
+   FLASH
+========================================================= */
+
+#flash{
+
+    position:fixed;
+    inset:0;
+
+    background:#fff7cc;
+
+    opacity:0;
+
+    pointer-events:none;
+
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes pulse{
+
+    50%{
+
+        transform:
+        translate(-50%,-50%)
+        scale(1.08);
+
+    }
+
+}
+
+@keyframes pulseSlow{
+
+    50%{
+
+        transform:
+        translate(-50%,-50%)
+        scale(.94);
+
+    }
+
+}
+
+@keyframes breathe{
+
+    50%{
+
+        transform:scale(1.05);
+
+        filter:brightness(1.15);
+
+    }
+
+}
+
+@keyframes spin{
+
+    from{
+
+        transform:
+        translate(-50%,-50%)
+        rotate(0deg);
+
+    }
+
+    to{
+
+        transform:
+        translate(-50%,-50%)
+        rotate(360deg);
+
+    }
+
+}
+
+@keyframes spinReverse{
+
+    from{
+
+        transform:
+        translate(-50%,-50%)
+        rotate(360deg);
+
+    }
+
+    to{
+
+        transform:
+        translate(-50%,-50%)
+        rotate(0deg);
+
+    }
+
+}
+
+@keyframes gridMove{
+
+    from{
+
+        background-position:0 0;
+
+    }
+
+    to{
+
+        background-position:60px 60px;
+
+    }
+
+}
+
+@keyframes noiseMove{
+
+    from{
+
+        transform:translate(0,0);
+
+    }
+
+    to{
+
+        transform:translate(20px,15px);
+
+    }
+
+}

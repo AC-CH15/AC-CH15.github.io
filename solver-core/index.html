@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ABSOLUTE SOLVER</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- ===================================================== -->
+<!-- Background -->
+<!-- ===================================================== -->
+
+<div id="background-grid"></div>
+<div id="scanlines"></div>
+<div id="noise"></div>
+<div id="vignette"></div>
+
+<!-- ===================================================== -->
+<!-- Floating Particles -->
+<!-- ===================================================== -->
+
+<div id="particles"></div>
+
+<!-- ===================================================== -->
+<!-- Solver Core -->
+<!-- ===================================================== -->
+
+<div id="solver-container">
+
+    <!-- Outer Halo -->
+
+    <div class="halo halo-1"></div>
+    <div class="halo halo-2"></div>
+
+    <!-- Rotating Rings -->
+
+    <div class="ring ring1"></div>
+    <div class="ring ring2"></div>
+    <div class="ring ring3"></div>
+
+    <!-- Orbiting Symbols -->
+
+    <div id="orbit-layer">
+
+        <span class="glyph">&lt;&gt;</span>
+        <span class="glyph">[]</span>
+        <span class="glyph">◇</span>
+        <span class="glyph">⊕</span>
+        <span class="glyph">△</span>
+        <span class="glyph">//</span>
+
+    </div>
+
+    <!-- Tendrils -->
+
+    <div id="tendrils">
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+    <!-- Core -->
+
+    <div id="core">
+
+        <div id="core-glow"></div>
+
+        <div id="core-inner"></div>
+
+        <div id="core-cracks"></div>
+
+        <div class="glitch-slice slice1"></div>
+        <div class="glitch-slice slice2"></div>
+        <div class="glitch-slice slice3"></div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- Boot Terminal -->
+<!-- ===================================================== -->
+
+<div id="terminal">
+
+    <p class="status active">
+        Initializing...
+    </p>
+
+    <p class="status">
+        Establishing Neural Link...
+    </p>
+
+    <p class="status">
+        Reading Host Memory...
+    </p>
+
+    <p class="status">
+        Accessing Archive...
+    </p>
+
+    <p class="status warning">
+        WARNING:
+        UNKNOWN CONSCIOUSNESS DETECTED
+    </p>
+
+    <p class="status success">
+        Synchronization Complete.
+    </p>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- Hidden Message -->
+<!-- ===================================================== -->
+
+<div id="hidden-message">
+
+    YOU ARE OBSERVED.
+
+</div>
+
+<!-- ===================================================== -->
+<!-- Click Flash -->
+<!-- ===================================================== -->
+
+<div id="flash"></div>
+
+<!-- ===================================================== -->
+<!-- Audio (optional) -->
+<!-- ===================================================== -->
+
+<audio id="hum" loop>
+    <source src="hum.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="static">
+    <source src="static.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ===================================================== -->
+<!-- JavaScript -->
+<!-- ===================================================== -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
