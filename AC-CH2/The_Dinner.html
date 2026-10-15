@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ff174f">
+<meta name="description" content="A strawberry-soaked, corrupted dream log: The Dinner That Shouldn't Be.">
+<title>THE DINNER THAT SHOULDN'T BE</title>
+<style>
+  /* The mushroom hallucination's inverted palette */
+body.mushroom-dream {
+    --lime: #c34cff;
+    --blood: #8700ff;
+    --wine: #230031;
+    --ink: #100015;
+    --cyan: #caff38;
+}
+  :root{
+    color-scheme:dark;
+    --blood:#ff174f; --pink:#ff55c8; --cream:#fff2d3; --lime:#d7ff28;
+    --orange:#ff6a1a; --cyan:#27e5ff; --ink:#17000f; --wine:#43051f;
+    --panel:rgba(23,0,15,.9); --line:rgba(255,242,211,.34);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:90px}
+  body{margin:0;background:var(--ink);color:var(--cream);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden;line-height:1.65}
+  a{color:inherit}
+  button{font:inherit;cursor:pointer}
+  ::selection{background:var(--lime);color:var(--ink)}
+  .skip-link{position:fixed;left:12px;top:-100px;z-index:1000;background:var(--lime);color:var(--ink);padding:10px 14px;font-weight:900}
+  .skip-link:focus{top:12px}
+  .scanlines,.grain,.edge-vignette{position:fixed;inset:0;pointer-events:none}
+  .scanlines{z-index:20;opacity:.18;background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(255,255,255,.12) 4px,transparent 5px 7px);mix-blend-mode:screen}
+  .grain{z-index:19;opacity:.15;background-image:radial-gradient(rgba(255,255,255,.9) .55px,transparent .9px),radial-gradient(rgba(255,30,110,.8) .6px,transparent 1px);background-size:7px 7px,11px 13px;background-position:0 0,3px 6px;mix-blend-mode:overlay}
+  .edge-vignette{z-index:18;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.38) 100%)}
+  body.glitch-active .scanlines{animation:scan-drift 8s linear infinite}
+  body.glitch-active .grain{animation:grain-shift 1.7s steps(2,end) infinite}
+  @keyframes scan-drift{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+  @keyframes grain-shift{0%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}50%{transform:translate(-1px,1px)}75%{transform:translate(1px,1px)} }
+  @keyframes glow-breathe{0%,100%{filter:drop-shadow(0 0 2px rgba(255,85,200,.1))}50%{filter:drop-shadow(0 0 13px rgba(255,85,200,.34))}}
+  @keyframes text-skip{0%,87%,89%,100%{transform:translate(0,0) skew(0)}88%{transform:translate(2px,-1px) skew(-2deg)} }
+  @keyframes ghost-cyan{0%,79%,81%,100%{clip-path:inset(0 0 88% 0);transform:translate(-4px,0)}80%{clip-path:inset(36% 0 38% 0);transform:translate(-7px,1px)} }
+  @keyframes ghost-pink{0%,57%,59%,100%{clip-path:inset(79% 0 0 0);transform:translate(4px,0)}58%{clip-path:inset(58% 0 20% 0);transform:translate(7px,-1px)} }
+  @keyframes slow-warp{0%,100%{transform:perspective(1100px) rotateX(0) rotateY(0) translateY(0)}50%{transform:perspective(1100px) rotateX(.4deg) rotateY(-.45deg) translateY(-2px)} }
+  @keyframes drip-sway{0%,100%{transform:translateY(0) skewX(0)}50%{transform:translateY(7px) skewX(1deg)} }
+  @keyframes blink-label{0%,91%,93%,100%{opacity:1}92%{opacity:.58} }
+  @keyframes dot-pulse{0%,100%{opacity:.32}50%{opacity:.8} }
+  @keyframes vine-creep{0%,100%{transform:rotate(-1deg) scaleY(1)}50%{transform:rotate(1deg) scaleY(1.025)} }
+
+  .topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px clamp(14px,4vw,48px);background:rgba(23,0,15,.94);border-bottom:2px solid var(--lime);box-shadow:0 6px 30px rgba(0,0,0,.32);backdrop-filter:blur(12px)}
+  .brand{font-size:clamp(.85rem,1.5vw,1.1rem);font-weight:1000;letter-spacing:.11em;text-decoration:none;text-transform:uppercase;white-space:nowrap;color:var(--lime)}
+  .brand b{color:var(--pink)}
+  .nav{display:flex;gap:clamp(9px,2vw,23px);align-items:center;justify-content:center;flex-wrap:wrap;font-size:.72rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+  .nav a{text-decoration:none;border-bottom:1px solid transparent;padding:5px 0}
+  .nav a:hover,.nav a:focus-visible{color:var(--cyan);border-color:var(--cyan)}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .control{border:1px solid var(--lime);background:var(--lime);color:var(--ink);padding:8px 10px;font-size:.69rem;font-weight:1000;text-transform:uppercase;letter-spacing:.04em;box-shadow:3px 3px 0 var(--pink)}
+  .control[aria-pressed="false"]{background:var(--ink);color:var(--cream);border-color:var(--cream);box-shadow:3px 3px 0 var(--wine)}
+  .control:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+
+  .hero{min-height:650px;position:relative;isolation:isolate;overflow:hidden;display:grid;place-items:center;padding:100px 20px 90px;background:radial-gradient(ellipse at 50% 38%,rgba(255,85,200,.5),transparent 35%),linear-gradient(135deg,#280014 0%,#7d002a 40%,#200010 100%);border-bottom:7px solid var(--pink)}
+  .hero::before{content:"";position:absolute;z-index:-1;inset:-25%;background:repeating-conic-gradient(from 8deg at 50% 50%,rgba(255,23,79,.26) 0 5deg,transparent 5deg 10deg,rgba(215,255,40,.14) 10deg 11deg,transparent 11deg 20deg);animation:slow-spin 80s linear infinite}
+  .hero::after{content:"";position:absolute;top:0;left:0;right:0;height:82px;background:var(--ink);clip-path:polygon(0 0,100% 0,100% 20%,97% 20%,95% 78%,92% 80%,89% 25%,85% 27%,82% 90%,79% 90%,76% 32%,72% 31%,69% 75%,65% 77%,62% 26%,57% 28%,54% 93%,50% 95%,46% 28%,42% 29%,39% 70%,36% 71%,32% 25%,27% 27%,24% 81%,21% 82%,17% 29%,13% 32%,11% 75%,7% 76%,5% 24%,0 25%);opacity:.95}
+  @keyframes slow-spin{to{transform:rotate(360deg)}}
+  .hero-inner{width:min(100%,1000px);position:relative;text-align:center;z-index:2}
+  .kicker{display:inline-block;padding:7px 12px;border:1px solid var(--lime);background:var(--ink);color:var(--lime);font:900 .7rem/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.22em;text-transform:uppercase;transform:rotate(-1deg)}
+  .hero h1{font-size:clamp(3.4rem,12vw,9rem);line-height:.78;letter-spacing:-.09em;text-transform:uppercase;margin:35px 0 26px;text-shadow:5px 4px 0 var(--pink),-5px -3px 0 var(--cyan),10px 10px 0 rgba(0,0,0,.8);font-weight:1000}
+  .hero h1 .line{display:block;position:relative;width:fit-content;max-width:100%;margin-inline:auto}
+  .hero h1 .line:first-child{color:var(--cream);transform:rotate(-2deg)}
+  .hero h1 .line:last-child{color:var(--lime);font-size:.75em;margin-top:16px;transform:rotate(1.6deg)}
+  .glitch-text{position:relative;animation:text-skip 6.8s steps(1,end) infinite}
+  .glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:.8;overflow:hidden}
+  .glitch-text::before{color:var(--cyan);text-shadow:-2px 0 var(--cyan);animation:ghost-cyan 6.8s steps(1,end) infinite}
+  .glitch-text::after{color:var(--pink);text-shadow:2px 0 var(--pink);animation:ghost-pink 5.9s steps(1,end) infinite}
+  .hero-caption{max-width:680px;margin:35px auto 0;padding:15px 18px;background:rgba(23,0,15,.88);border:1px solid var(--pink);box-shadow:8px 8px 0 var(--wine);font-size:clamp(.95rem,2vw,1.15rem);font-weight:800}
+  .hero-caption em{color:var(--lime);font-style:normal}
+  .hero-mark{position:absolute;font:1000 clamp(4rem,10vw,9rem)/.8 Impact,system-ui,sans-serif;color:transparent;-webkit-text-stroke:1px rgba(255,242,211,.16);z-index:0;user-select:none}
+  .hero-mark.left{left:-.2em;bottom:3%;transform:rotate(-14deg)}.hero-mark.right{right:-.2em;top:16%;transform:rotate(12deg);color:rgba(255,23,79,.12);-webkit-text-stroke:0}
+  .floating-eye{position:absolute;width:clamp(90px,15vw,170px);height:clamp(44px,8vw,82px);border:5px solid var(--ink);border-radius:50% 50% 46% 46%;background:var(--cream);box-shadow:0 0 0 4px var(--pink),0 0 35px rgba(255,85,200,.55);z-index:1;transform:rotate(-17deg);opacity:.82;animation:glow-breathe 4.8s ease-in-out infinite}
+  .floating-eye::before{content:"";position:absolute;left:42%;top:14%;width:30%;height:70%;border-radius:50%;background:var(--ink);box-shadow:0 0 12px var(--blood)}
+  .floating-eye.one{left:6%;top:27%}.floating-eye.two{right:5%;bottom:19%;transform:rotate(15deg) scale(.8);animation-delay:-1.8s}
+  .hero-stamp{position:absolute;left:clamp(12px,5vw,65px);bottom:35px;z-index:3;transform:rotate(-7deg);background:var(--blood);color:var(--cream);border:3px solid var(--ink);outline:1px solid var(--lime);padding:8px 11px;font:1000 .75rem/1.2 ui-monospace,monospace;letter-spacing:.08em}
+  .ticker{position:relative;z-index:4;overflow:hidden;border-block:3px solid var(--ink);background:var(--lime);color:var(--ink);transform:rotate(-.8deg) scale(1.02);padding:8px 0}
+  .ticker-track{display:flex;width:max-content;gap:24px;white-space:nowrap;font:1000 clamp(1rem,2vw,1.5rem)/1.4 Impact,system-ui,sans-serif;letter-spacing:.09em;animation:marquee 24s linear infinite}
+  @keyframes marquee{to{transform:translateX(-50%)}}
+  .ticker b{color:var(--blood)}
+
+  .section{padding:clamp(55px,8vw,105px) clamp(18px,7vw,100px);position:relative}
+  .section-label{font:900 .72rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);margin:0 0 12px}
+  .section-title{font-size:clamp(2.6rem,7vw,6.4rem);line-height:.85;letter-spacing:-.065em;text-transform:uppercase;margin:0 0 30px;font-weight:1000;text-shadow:4px 4px 0 var(--blood);max-width:1000px}
+  .section-title span{color:var(--pink);font-style:italic}
+  .story-area{background:var(--wine);background-image:radial-gradient(ellipse at 10% 20%,rgba(255,23,79,.27),transparent 32%),repeating-linear-gradient(135deg,transparent 0 34px,rgba(215,255,40,.025) 35px 37px);}
+  .story-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.45fr);gap:clamp(28px,5vw,65px);align-items:start}
+  .story-copy{min-width:0;position:relative;animation:slow-warp 9s ease-in-out infinite;transform-origin:center top}
+  .story-copy::before{content:"DON'T LOOK AT THE MIRROR";position:absolute;right:-.04em;top:3.5em;max-width:100%;font:1000 clamp(1.4rem,4vw,3.8rem)/.9 Impact,system-ui,sans-serif;letter-spacing:.03em;color:rgba(255,85,200,.065);transform:rotate(90deg) translateX(50%);transform-origin:right top;pointer-events:none;white-space:nowrap}
+  .chapter-tag{display:flex;align-items:center;gap:10px;color:var(--lime);font:900 .7rem/1.4 ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;margin-bottom:25px}
+  .chapter-tag::before{content:"";height:2px;width:40px;background:var(--pink);box-shadow:8px 0 0 var(--cyan)}
+  .story-copy p{position:relative;margin:0 0 1.2em;max-width:760px;font-size:clamp(1rem,1.42vw,1.18rem);line-height:1.9;color:#ffefd9}
+  .story-copy p.emphasis{font-size:clamp(1.35rem,3vw,2.35rem);font-weight:1000;line-height:1.15;letter-spacing:-.04em;color:var(--lime);text-transform:uppercase;margin:1.25em 0}
+  .story-copy p.emphasis span{display:block;color:var(--pink);margin-top:5px}
+  .story-copy strong{color:var(--lime)}
+  .story-copy .glitch-line{color:var(--pink);font-weight:1000;letter-spacing:.04em;text-shadow:2px 0 var(--cyan),-2px 0 rgba(255,23,79,.55)}
+  .story-copy .glitch-line[data-text]::after{content:attr(data-text);position:absolute;left:2px;top:0;color:var(--cyan);opacity:.65;clip-path:inset(42% 0 24% 0);transform:translateX(-3px);pointer-events:none;animation:text-skip 4.9s steps(1,end) infinite}
+  .story-copy .dialogue{margin:1.4em 0 1.7em;padding:16px 18px 16px 22px;border-left:4px solid var(--pink);background:rgba(15,0,10,.66);box-shadow:6px 6px 0 rgba(255,23,79,.24);font-size:clamp(1.05rem,1.8vw,1.3rem);font-weight:750}
+  .speaker{display:block;font:1000 .74rem/1.4 ui-monospace,monospace;letter-spacing:.2em;color:var(--lime);margin-bottom:7px}
+  .dialogue.fai{border-left-color:var(--cyan)}.dialogue.fai .speaker{color:var(--cyan)}
+  .dialogue.berry{border-left-color:var(--blood);background:linear-gradient(90deg,rgba(255,23,79,.16),rgba(15,0,10,.72));}
+  .dialogue.berry .speaker{color:var(--pink);letter-spacing:.15em}
+  .dialogue.berry .spoken{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.1em;color:#ffcae8;text-shadow:2px 0 var(--blood),-1px 0 var(--cyan)}
+  .side-note{position:sticky;top:100px;display:grid;gap:18px}
+  .side-note-card{padding:17px;background:rgba(18,0,11,.83);border:1px solid rgba(255,242,211,.25);box-shadow:5px 5px 0 rgba(255,23,79,.18);position:relative;overflow:hidden}
+  .side-note-card::after{content:"";position:absolute;right:-20px;bottom:-26px;width:100px;height:100px;border-radius:50%;border:12px dotted rgba(215,255,40,.22);pointer-events:none}
+  .side-note-card .small-label{display:block;color:var(--cyan);font:900 .65rem/1.5 ui-monospace,monospace;letter-spacing:.15em;margin-bottom:9px}
+  .side-note-card p{margin:0;font-size:.92rem;line-height:1.65}
+  .side-note-card b{color:var(--lime)}
+  .eye-row{display:flex;gap:9px;margin:12px 0 4px}
+  .eye-dot{display:block;width:28px;height:15px;border-radius:50%;background:var(--cream);position:relative;box-shadow:0 0 13px rgba(255,242,211,.25)}
+  .eye-dot::after{content:"";position:absolute;width:6px;height:10px;left:11px;top:2px;border-radius:50%;background:var(--ink)}
+
+  .image-gallery{background:#16000c;overflow:hidden;border-block:7px solid var(--blood)}
+  .image-gallery::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;background:repeating-radial-gradient(ellipse at center,transparent 0 16px,var(--pink) 17px 18px,transparent 19px 33px)}
+  .gallery-head{position:relative;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+  .gallery-head p{max-width:460px;margin:0 0 30px;color:#e9c4d7;font-size:.96rem}
+  .slot-grid{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+  .image-placeholder{margin:0;min-width:0;position:relative;background:#270018;border:2px dashed var(--pink);padding:8px;box-shadow:7px 7px 0 rgba(255,23,79,.18);transform:rotate(var(--tilt,0deg));}
+  .image-placeholder:nth-child(even){--tilt:.6deg}.image-placeholder:nth-child(odd){--tilt:-.45deg}
+  .placeholder-screen{aspect-ratio:16/9;position:relative;overflow:hidden;display:grid;place-items:center;text-align:center;background-color:#47001d;background-image:linear-gradient(45deg,rgba(255,85,200,.18) 25%,transparent 25%,transparent 75%,rgba(255,85,200,.18) 75%),linear-gradient(45deg,rgba(39,229,255,.11) 25%,transparent 25%,transparent 75%,rgba(39,229,255,.11) 75%);background-size:30px 30px;background-position:0 0,15px 15px;isolation:isolate}
+  .placeholder-screen::before{content:"";position:absolute;inset:-20%;z-index:-1;background:repeating-conic-gradient(from 9deg,rgba(255,23,79,.7) 0 7deg,transparent 7deg 14deg,rgba(215,255,40,.3) 14deg 15deg,transparent 15deg 25deg);opacity:.36;animation:slow-spin 100s linear infinite}
+  .slot-icon{display:block;font-size:clamp(2.3rem,6vw,5rem);line-height:1;color:var(--lime);text-shadow:4px 4px var(--blood),-3px -2px var(--cyan);filter:drop-shadow(0 0 14px rgba(255,85,200,.5))}
+  .slot-instruction{display:block;max-width:90%;margin:12px auto 0;color:var(--cream);font:900 clamp(.65rem,1.4vw,.85rem)/1.5 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+  .slot-dimensions{display:block;margin-top:5px;color:#e8abc9;font:600 .66rem/1.5 ui-monospace,monospace;letter-spacing:.04em}
+  .image-placeholder figcaption{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 7px 3px;font:900 .67rem/1.4 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--lime)}
+  .slot-number{color:var(--pink);white-space:nowrap}
+  .slot-image{display:block;width:100%;height:100%;position:absolute;inset:0;object-fit:cover}
+  .jumpscare-zone{background:var(--blood);color:var(--ink);overflow:hidden}
+  .jumpscare-zone::before{content:"! ! ! ! ! ! ! ! ! ! ! ! ! !";position:absolute;left:-10%;top:8%;white-space:nowrap;font:1000 clamp(4rem,16vw,14rem)/1 Impact,system-ui,sans-serif;letter-spacing:.07em;color:rgba(23,0,15,.08);transform:rotate(-9deg);pointer-events:none}
+  .jumpscare-zone .section-label{color:var(--ink)}
+  .jumpscare-zone .section-title{color:var(--cream);text-shadow:5px 5px var(--ink),-3px -3px var(--cyan)}
+  .ending-copy{max-width:730px;font-size:clamp(1.1rem,2.1vw,1.7rem);font-weight:800;line-height:1.55;position:relative}
+  .ending-copy p{margin:0 0 18px}
+  .end-dash{font:1000 clamp(2.5rem,8vw,6rem)/.9 Impact,system-ui,sans-serif;letter-spacing:.03em;margin:20px 0;color:var(--lime);text-shadow:4px 4px var(--ink)}
+  .jumpscare-placeholder{max-width:940px;margin:42px 0 0;background:var(--ink);padding:12px;border:3px solid var(--cream);outline:4px solid var(--ink);box-shadow:10px 10px 0 rgba(23,0,15,.45);transform:rotate(.4deg)}
+  .jumpscare-placeholder .placeholder-screen{aspect-ratio:16/7;background-color:#050005;border:1px dashed var(--blood);background-image:repeating-linear-gradient(0deg,#080008 0 3px,#1b0012 4px 5px),repeating-linear-gradient(90deg,transparent 0 19px,rgba(255,23,79,.12) 20px 21px)}
+  .jumpscare-placeholder .placeholder-screen::before{opacity:.2}
+  .jumpscare-placeholder .slot-icon{font-size:clamp(3rem,8vw,7rem);color:var(--cream);letter-spacing:.1em;text-shadow:5px 0 var(--blood),-5px 0 var(--cyan)}
+  .jumpscare-placeholder .slot-instruction{color:var(--pink);font-size:clamp(.8rem,1.5vw,1rem)}
+  .jumpscare-placeholder figcaption{color:var(--cream)}
+  .edit-help{margin:27px 0 0;padding:16px 18px;border-left:4px solid var(--ink);background:rgba(255,242,211,.22);font-size:.9rem;line-height:1.7;max-width:940px}
+  .edit-help code{overflow-wrap:anywhere;background:rgba(23,0,15,.12);padding:2px 4px;font-size:.85em}
+  .footer{padding:38px 18px 45px;text-align:center;background:var(--ink);border-top:6px solid var(--lime);color:#d9b4c9}
+  .footer .footer-title{font:1000 clamp(2.7rem,8vw,5rem)/.85 Impact,system-ui,sans-serif;color:var(--lime);margin:0 0 17px;letter-spacing:-.04em}
+  .footer p{max-width:720px;margin:0 auto;font-size:.84rem;line-height:1.7}
+  .footer .tiny{display:block;color:var(--pink);margin-top:13px;font:800 .66rem/1.6 ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase}
+
+  body.motion-paused *,body.motion-paused *::before,body.motion-paused *::after{animation-play-state:paused!important}
+  body.stable-mode .glitch-text,body.stable-mode .glitch-text::before,body.stable-mode .glitch-text::after,
+  body.stable-mode .glitch-line[data-text]::after{animation:none!important;clip-path:none!important;transform:none!important;opacity:0!important}
+  body.stable-mode .hero h1{text-shadow:4px 4px 0 var(--blood);}
+  body.stable-mode .scanlines{opacity:.06}body.stable-mode .grain{opacity:.04}body.stable-mode .story-copy{animation:none}
+  @media(max-width:900px){.topbar{flex-wrap:wrap}.brand{margin-right:auto}.nav{order:3;width:100%;justify-content:flex-start}.controls{margin-left:auto}.story-layout{grid-template-columns:1fr}.side-note{position:relative;top:auto;grid-template-columns:repeat(2,minmax(0,1fr))}.side-note-card:last-child{grid-column:1/-1}}
+  @media(max-width:600px){.topbar{gap:10px}.controls{width:100%;justify-content:flex-start}.hero{min-height:590px;padding:100px 15px 105px}.hero h1{font-size:clamp(3rem,15vw,5.8rem)}.floating-eye.one{left:-20px;top:20%}.floating-eye.two{right:-20px;bottom:14%}.hero-caption{font-size:.93rem}.story-copy::before{display:none}.side-note{grid-template-columns:1fr}.side-note-card:last-child{grid-column:auto}.slot-grid{grid-template-columns:1fr}.image-placeholder{transform:none}.gallery-head{display:block}.section{padding-top:58px;padding-bottom:58px}.jumpscare-placeholder .placeholder-screen{aspect-ratio:4/3}.nav{gap:13px}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.berry-drips {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 180px;
+    z-index: 21;
+    pointer-events: none;
+    opacity: .8;
+
+    background: linear-gradient(
+        90deg,
+        #ff174f,
+        #ff55c8,
+        #8700ff,
+        #ff174f
+    );
+
+    clip-path: polygon(
+        0 0, 100% 0, 100% 18%,
+        96% 20%, 94% 57%, 92% 58%,
+        90% 21%, 82% 23%, 79% 83%,
+        77% 84%, 75% 23%, 67% 25%,
+        64% 65%, 62% 66%, 59% 19%,
+        51% 21%, 49% 53%, 47% 55%,
+        44% 23%, 36% 25%, 34% 88%,
+        32% 90%, 29% 22%, 20% 24%,
+        17% 68%, 15% 69%, 12% 20%, 0 24%
+    );
+
+    filter: drop-shadow(0 8px 14px #ff174f);
+    animation: drip-sway 3.5s ease-in-out infinite;
+}
+.berry-pattern {
+    position: fixed;
+    inset: -10%;
+    z-index: 17;
+    pointer-events: none;
+    opacity: .42;
+    mix-blend-mode: screen;
+
+    background-image:
+        radial-gradient(
+            circle,
+            #ff174f 0 3px,
+            transparent 4px
+        ),
+        repeating-conic-gradient(
+            from 12deg,
+            #ff55c833 0 7deg,
+            transparent 7deg 17deg,
+            #c34cff44 17deg 20deg,
+            transparent 20deg 30deg
+        ),
+        radial-gradient(
+            ellipse at center,
+            #c34cff44,
+            transparent 65%
+        );
+
+    background-size:
+        35px 35px,
+        230px 230px,
+        100% 100%;
+
+    animation: pattern-wobble 4s steps(2, end) infinite;
+}
+
+@keyframes pattern-wobble {
+    0%, 100% {
+        background-position: 0 0, 0 0, center;
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        background-position: 12px -9px, 35px -22px, center;
+        transform: rotate(.8deg) scale(1.04);
+    }
+}
+
+.crt-tear {
+    position: fixed;
+    inset: 0;
+    z-index: 24;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+    mix-blend-mode: screen;
+}
+
+.crt-tear::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0 12px,
+        #ff174f88 13px 15px,
+        transparent 16px 23px
+    );
+}
+
+.crt-tear::after {
+    content: "";
+    position: absolute;
+    left: -5%;
+    top: 35%;
+    width: 110%;
+    height: 14vh;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #27e5ffcc 18%,
+        #ff174fcc 45%,
+        #c34cffcc 70%,
+        transparent
+    );
+
+    clip-path: polygon(
+        0 12%, 23% 12%, 23% 0,
+        58% 0, 58% 28%, 80% 28%,
+        80% 15%, 100% 15%,
+        100% 87%, 68% 87%,
+        68% 100%, 32% 100%,
+        32% 73%, 0 73%
+    );
+}
+
+body.burst-glitch .crt-tear {
+    animation: crt-failure .22s steps(2, end) both;
+}
+
+@keyframes crt-failure {
+    0% {
+        opacity: 0;
+        transform: translateX(-2%);
+        clip-path: inset(0 0 75% 0);
+    }
+
+    30% {
+        opacity: .95;
+        transform: translateX(2%);
+        clip-path: inset(32% 0 42% 0);
+    }
+
+    65% {
+        opacity: .75;
+        transform: translateX(-1%);
+        clip-path: inset(72% 0 12% 0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(1%);
+    }
+}
+.hallucination-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 23;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.apparition {
+    position: absolute;
+    opacity: 0;
+    transform: scale(.65) rotate(-12deg);
+    transition: opacity .08s, transform .08s;
+    filter: saturate(2) contrast(1.5);
+    text-shadow: 0 0 18px currentColor;
+}
+
+.apparition.is-visible {
+    opacity: .94;
+    transform: scale(1.12) rotate(8deg);
+}
+
+
+.apparition--eyes {
+    top: 20%;
+    left: 8%;
+    color: #fff2d3;
+
+    /* Blend the entire eye image with the page */
+    mix-blend-mode: screen;
+    filter: none;
+}
+
+.apparition--eyes img {
+    display: block;
+    width: clamp(180px, 28vw, 420px);
+    height: auto;
+    object-fit: contain;
+
+    /* Let the parent handle the blending */
+    mix-blend-mode: normal;
+    filter: saturate(2) contrast(1.5);
+}
+
+
+.apparition--berry {
+    left: 48%;
+    bottom: 10%;
+    color: #ff174f;
+    font-size: clamp(3rem, 9vw, 7rem);
+}
+
+.apparition--fai {
+    right: 12%;
+    top: 12%;
+    color: #c34cff;
+    font-size: clamp(8rem, 20vw, 16rem);
+}
+
+body.stable-mode .glitch-text {
+    animation: none !important;
+}
+
+body.stable-mode .glitch-text::before,
+body.stable-mode .glitch-text::after,
+body.stable-mode .glitch-line[data-text]::after {
+    animation: none !important;
+    clip-path: none !important;
+    transform: none !important;
+    opacity: 0 !important;
+}
+
+body.returning-to-chapter {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+</style>
+</head>
+<body class="glitch-active mushroom-dream">
+<a class="skip-link" href="#story">Skip to the story</a>
+
+<div class="berry-drips" aria-hidden="true"></div>
+<div class="berry-pattern" aria-hidden="true"></div>
+<div class="crt-tear" aria-hidden="true"></div>
+
+<div class="hallucination-layer" aria-hidden="true">
+    <div class="apparition apparition--eyes">
+    <img src="images/creepy-eye.gif" alt="">
+</div>
+    <div class="apparition apparition--mushroom">🍄</div>
+    <div class="apparition apparition--berry">✿ ● ✿</div>
+    <div class="apparition apparition--fai">◉</div>
+</div>
+
+<div class="scanlines" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div><div class="edge-vignette" aria-hidden="true"></div>
+<!--header class="topbar">
+  <a class="brand" href="#top">✹ <b>Str@wb3rry</b> // STATIC</a>
+  <nav class="nav" aria-label="Story navigation"><a href="#story">The story</a><a href="#image-slots">Image slots</a><a href="#ending">The end</a></nav>
+  <div class="controls">
+    <button class="control" id="glitchToggle" type="button" aria-pressed="true">Glitch: ON</button>
+    <button class="control" id="motionToggle" type="button" aria-pressed="false">Pause motion</button>
+  </div>
+</header-->
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <span class="hero-mark left" aria-hidden="true">EYE</span><span class="hero-mark right" aria-hidden="true">EYE EYE</span>
+    <span class="floating-eye one" aria-hidden="true"></span><span class="floating-eye two" aria-hidden="true"></span>
+    <div class="hero-inner">
+      <span class="kicker">SIDE STORY // DREAM FILE 002 // SIGNAL UNSTABLE</span>
+      <h1 id="hero-title"><span class="line glitch-text" data-text="THE DINNER">THE DINNER</span><span class="line glitch-text" data-text="THAT SHOULDN’T BE">THAT SHOULDN’T BE</span></h1>
+      <p class="hero-caption">A table set for guests who have no faces.<br><em>A mirror that remembers something else.</em><br>And a familiar voice coming through all that static.</p>
+    </div>
+    <div class="hero-stamp">DO NOT TRUST<br>THE REFLECTION ✹</div>
+  </section>
+  <div class="ticker" aria-label="Corrupted decorative text"><div class="ticker-track" aria-hidden="true"><span>✹ PLEASE TAKE YOUR SEAT</span><b>✦ YOU SHOULDN’T BE HERE</b><span>✹ PLEASE TAKE YOUR SEAT</span><b>✦ YOU SHOULDN’T BE HERE</b><span>✹ PLEASE TAKE YOUR SEAT</span><b>✦ YOU SHOULDN’T BE HERE</b><span>✹ PLEASE TAKE YOUR SEAT</span><b>✦ YOU SHOULDN’T BE HERE</b></div></div>
+
+  <section class="section story-area" id="story">
+    <p class="section-label">Transcript recovered // ██:██:██</p>
+    <h2 class="section-title">A VERY <span>POLITE</span><br>NIGHTMARE.</h2>
+    <div class="story-layout">
+      <article class="story-copy" aria-label="The Dinner That Shouldn’t Be story">
+        <div class="chapter-tag">01 // The room</div>
+        <p>Fai woke to the soft clink of silverware and the low murmur of some kind of conversation.</p>
+        <p>She sat up in a chair at the head of a long mahogany table. Crystal chandeliers hung overhead, their light flickering through thick, living vines that crawled across the walls and ceiling like parasitic veins, They are pulsing faintly, glossy with something that wasn’t sap. The air smelled of old perfume, candle wax and something wet.</p>
+        <p class="emphasis">She was confused.<span>She was not scared.</span></p>
+        <p>Around the table sat figures she did not recognize. Worker drones in formal attire, optics dim and polite. And humans. Or things that used to be human. Every one of them was a perfect black silhouette, featureless except for two glowing white eyes that stared without blinking. They raised glasses. They nodded. They smiled with mouths that weren’t there.</p>
+
+        <!-- IMAGE SLOT 01: DINNER TABLE. To add art later, replace only the .placeholder-screen div below with: <img class="slot-image" src="images/dinner-table.png" alt="A long dinner table disappearing into shadow, surrounded by silhouettes with glowing eyes"> -->
+        <!-- IMAGE SLOT 01: DINNER TABLE -->
+<figure class="image-placeholder" data-image-slot="dinner-table">
+    <div class="placeholder-screen">
+        <img
+            class="slot-image"
+            src="images/gala.jpg"
+            alt="A sinister dinner gala surrounded by shadowy figures"
+        >
+    </div>
+
+    <figcaption>
+        <span>Dining room // establishing shot</span>
+        <span class="slot-number">IMG_001</span>
+    </figcaption>
+</figure>
+
+        <div class="chapter-tag">02 // The mirror</div>
+        <p>Fai tilted her head and falling across a face she could no longer see.</p>
+        <p>A tall mirror stood against the far wall, framed in tarnished gold. She stood, then walked over.</p>
+        <p>The reflection that looked back was the same as the others: a pure black silhouette with two bright white eyes. No labcoat. No jagged hair. No manic grin. Just shape and light.</p>
+
+        <!-- IMAGE SLOT 02: FAI'S MIRROR REFLECTION. Replace the contents inside this .placeholder-screen div with an img tag when you have your illustration. -->
+        <figure class="image-placeholder" data-image-slot="mirror-reflection">
+       <div class="placeholder-screen">
+        <img
+            class="slot-image"
+            src="images/Shadow Fai.png"
+            alt="A sinister dinner gala surrounded by shadowy figures"
+        >
+    </div>
+</figure>
+
+        <p>Fai stared for half a second.</p>
+        <p>Then she raised both hands and made the most ridiculous faces the silhouette could manage. Poking her invisible cheeks, sticking out a tongue that wasn’t there, crossing her glowing eyes, waving jazz hands, even attempting a dramatic bow that nearly toppled her. She snorted.</p>
+        <div class="dialogue fai"><span class="speaker">FAI</span>“Look at me. Peak elegance. JCJenson’s finest abandoned science experiment, now available in mystery shadow edition.”</div>
+        <p>She struck another pose then another. The reflection obeyed.</p>
+
+        <div class="chapter-tag">03 // The interruption</div>
+        <p>A soft, wet giggle drifted from the end of the table.</p>
+        <p>The voice that followed was familiar but every syllable glitched and tore, like audio played through a dying speaker underwater.</p>
+        <div class="dialogue berry"><span class="speaker">STR@WB3RRY</span><span class="spoken glitch-line" data-text="“Y0u sh0ldn’t b3 h3r3.”">“Y0u sh0ldn’t b3 h3r3.”</span></div>
+
+        <!-- IMAGE SLOT 03: STRAWBERRY / THE VOICE AT THE END OF THE TABLE. -->
+        <figure class="image-placeholder" data-image-slot="strawberry-voice">
+        <div class="placeholder-screen">
+        <img
+            class="slot-image"
+            src="images/SB_1.png"
+            alt="A sinister dinner gala surrounded by shadowy figures"
+        >
+    </div>  
+        </figure>
+
+        <p>The chandeliers flickered.</p>
+        <p>The vines on the walls tightened with a wet creak.</p>
+        <p>Every pair of white eyes at the table turned toward her in perfect, simultaneous silence.</p>
+        <p>Fai’s silhouette froze mid-gesture.</p>
+        <p>The mirror cracked from the center outward in a spiderweb of black.</p>
+        <p class="emphasis">And then...<span>▰▰ SIGNAL LOST ▰▰</span></p>
+      </article>
+
+      <aside class="side-note" aria-label="Visual notes">
+        <div class="side-note-card"><span class="small-label">ROOM CONDITIONS // 01</span><p>Lighting: <b>candle-gold</b><br>Walls: <b>alive, apparently</b><br>Guests: <b>not on the list</b></p></div>
+        <div class="side-note-card"><span class="small-label">IDENTITY CHECK // 02</span><p>Face detected: <b>NO</b><br>Eyes detected: <b>YES</b><br>Reflection status: <b>UNTRUSTWORTHY</b></p><div class="eye-row" aria-hidden="true"><i class="eye-dot"></i><i class="eye-dot"></i></div></div>
+        <div class="side-note-card"><span class="small-label">AUDIO FRAGMENT // 03</span><p>“Y0u sh0ldn’t b3 h3r3.”</p><p style="color:var(--pink);margin-top:9px;font:800 .68rem/1.6 ui-monospace,monospace">SOURCE: STR@WB3RRY<br>CONFIDENCE: TOO FAMILIAR</p></div>
+        <div class="side-note-card"><span class="small-label">SYSTEM ADVISORY</span><p>Repeated shapes, color separation, moving texture, and intentional distortion are part of this page’s horror aesthetic. Use <b>Stabilize signal</b> to tone it down.</p></div>
+      </aside>
+    </div>
+  </section>
+
+  
+
+
+<script>
+const body = document.body;
+
+const glitchToggle = document.getElementById("glitchToggle");
+const motionToggle = document.getElementById("motionToggle");
+
+// Only attach controls if those buttons exist.
+if (glitchToggle) {
+    glitchToggle.addEventListener("click", () => {
+        const active = body.classList.toggle("glitch-active");
+        body.classList.toggle("stable-mode", !active);
+
+        glitchToggle.setAttribute("aria-pressed", String(active));
+        glitchToggle.textContent = active
+            ? "Glitch: ON"
+            : "Stabilize signal";
+    });
+}
+
+if (motionToggle) {
+    motionToggle.addEventListener("click", () => {
+        const paused = body.classList.toggle("motion-paused");
+
+        motionToggle.setAttribute("aria-pressed", String(paused));
+        motionToggle.textContent = paused
+            ? "Resume motion"
+            : "Pause motion";
+    });
+}
+
+// Find the hallucination images.
+const apparitions = [
+    ...document.querySelectorAll(".apparition")
+];
+
+function randomDisturbance() {
+    const disabled =
+        !body.classList.contains("glitch-active") ||
+        body.classList.contains("stable-mode") ||
+        body.classList.contains("motion-paused");
+
+    if (!disabled && apparitions.length > 0 && Math.random() < 0.8) {
+        const index = Math.floor(
+            Math.random() * apparitions.length
+        );
+
+        const chosen = apparitions[index];
+
+        chosen.classList.add("is-visible");
+        body.classList.add("burst-glitch");
+
+        const duration = 120 + Math.random() * 240;
+
+        setTimeout(() => {
+            chosen.classList.remove("is-visible");
+            body.classList.remove("burst-glitch");
+        }, duration);
+    }
+
+    setTimeout(
+        randomDisturbance,
+        400 + Math.random() * 1500
+    );
+}
+
+randomDisturbance();
+</script>
+
+<script>
+(() => {
+    let hasScrolled = false;
+    let isReturning = false;
+
+    function checkBottom() {
+        if (isReturning || !hasScrolled) return;
+
+        const doc = document.documentElement;
+
+        // Don't redirect if the page cannot scroll.
+        if (doc.scrollHeight <= window.innerHeight + 80) return;
+
+        // Detect when the reader reaches the bottom.
+        const nearBottom =
+            window.scrollY + window.innerHeight >=
+            doc.scrollHeight - 50;
+
+        if (!nearBottom) return;
+
+        isReturning = true;
+        document.body.classList.add("returning-to-chapter");
+
+        // Return to Chapter 2 and signal that its story
+        // should be expanded.
+        window.setTimeout(() => {
+            window.location.replace(
+                "index.html?sporeReturn=1#after-mushroom"
+            );
+        }, 350);
+    }
+
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 0) {
+            hasScrolled = true;
+        }
+
+        checkBottom();
+    }, { passive: true });
+
+    window.addEventListener("resize", checkBottom);
+})();
+</script>
+</body>
+</html>
