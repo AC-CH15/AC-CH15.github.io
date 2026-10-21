@@ -1,0 +1,120 @@
+
+/* ==========================
+   COMMENTS SECTION
+========================== */
+
+.comments-section {
+    --comments-bg: #15151d;
+    --comments-panel: #1c1c27;
+    --comments-text: #f1f1f7;
+    --comments-muted: #a3a3b5;
+    --comments-accent: #c59cff;
+    --comments-border: #343444;
+
+    max-width: 850px;
+    margin: 50px auto;
+    padding: 28px;
+    color: var(--comments-text);
+    background: var(--comments-bg);
+    border: 1px solid var(--comments-border);
+    border-radius: 18px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.comments-section * {
+    box-sizing: border-box;
+}
+
+.comments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.comments-eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--comments-accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.comments-header h2 {
+    margin: 0 0 10px;
+    font-size: clamp(24px, 4vw, 32px);
+    line-height: 1.2;
+}
+
+.comments-description {
+    margin: 0;
+    max-width: 520px;
+    color: var(--comments-muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.comments-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border: 1px solid var(--comments-border);
+    border-radius: 20px;
+    color: var(--comments-muted);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    background: #a4d6a4;
+    border-radius: 50%;
+}
+
+.comments-panel {
+    min-width: 0;
+    padding: 22px;
+    color: var(--comments-text);
+    background: var(--comments-panel);
+    border: 1px solid var(--comments-border);
+    border-radius: 12px;
+}
+
+.comments-loading {
+    color: var(--comments-muted);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+}
+
+.comments-panel #disqus_thread {
+    min-height: 150px;
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+    .comments-section {
+        margin: 25px 0;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .comments-header {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .comments-panel {
+        padding: 14px;
+    }
+
+    .comments-header h2 {
+        font-size: 25px;
+    }
+}
