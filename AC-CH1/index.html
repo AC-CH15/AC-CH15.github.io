@@ -11,13 +11,13 @@
     <div id="planet-corruption">
 
     <img
-        src="images/BROKEN_SCREEN.png"
+        src="../images/BROKEN_SCREEN.png"
         class="broken-screen"
         alt=""
     >
 
     <img
-        src="images/SOLVER_GOO.png"
+        src="../images/SOLVER_GOO.png"
         class="solver-goo"
         alt=""
     >
@@ -54,9 +54,9 @@
 
 </div>
 <div class="solver-bg">
-    <img src="images/ABS.png" alt="Absolute Solver">
+    <img src="../images/ABS.png" alt="Absolute Solver">
 </div>
-<details class="music-player" open>
+<!--details class="music-player" open>
 
     <summary class="music-toggle">
         ♫ AUDIO LOG
@@ -78,7 +78,7 @@
 
     </div>
 
-</details>
+</details-->
 
 
 
@@ -515,7 +515,7 @@
     </div>
 
     <img title="Live feed"
-        src="images/SB_AWAKE.png"
+        src="../images/SB_AWAKE.png"
         alt="Strawberry"
         class="strawberry-preview"
     >
@@ -1164,6 +1164,41 @@ details.addEventListener("toggle", ()=>{
 
 });
 
+
 </script>
+
+
+<!-- Comments Section -->
+<section class="comments-section" id="comments">
+    <div class="comments-header">
+        <div>
+            <span class="comments-eyebrow">COMMUNITY</span>
+            <h2>Join the conversation</h2>
+            <p class="comments-description">
+                Share your thoughts! Please be respectful.
+                Comments are reviewed before publication.
+            </p>
+        </div>
+
+        <span class="comments-badge">
+            <span class="status-dot"></span>
+            Moderated
+        </span>
+    </div>
+
+    <div class="comments-panel">
+        <div id="disqus_thread">
+            <p class="comments-loading">Loading comments...</p>
+        </div>
+
+        <noscript>
+            Please enable JavaScript to view the comments.
+        </noscript>
+    </div>
+</section>
+
+<!-- Load the comment system -->
+<script src="comments.js" defer></script>
+
 </body>
 </html>
