@@ -3,8 +3,6 @@
    DISQUS CONFIGURATION
 ========================== */
 
-// Replace this with your actual Disqus shortname.
-// Do not include ".disqus.com".
 const DISQUS_SHORTNAME = "ac-15";
 
 /* Identify the page's discussion thread. */
@@ -31,12 +29,9 @@ var disqus_config = function () {
         return;
     }
 
-    if (
-        !DISQUS_SHORTNAME ||
-        DISQUS_SHORTNAME === "ac-15"
-    ) {
+    if (!DISQUS_SHORTNAME) {
         comments.textContent =
-            "Set your Disqus shortname in comments.js to enable comments.";
+            "Disqus shortname is missing.";
         return;
     }
 
